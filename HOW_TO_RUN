@@ -1,0 +1,2 @@
+1. Put all .csv data files into CSV folder
+2. $ python parser.py
