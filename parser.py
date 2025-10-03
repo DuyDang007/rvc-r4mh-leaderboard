@@ -167,6 +167,11 @@ class Rule:
             pass
         print("Pace {} is not valid for {}".format(pace, activity.type))
         return False
+    def check_min_distance(activity: Activity):
+        if activity.distance < rule.MIN_DISTANCE:
+            return False
+        else:
+            return True
 
 
 ########################################################################################
@@ -198,7 +203,8 @@ if __name__ == "__main__":
                 
                 # Check for rule
                 if  Rule.check_activity_date(act) and \
-                    Rule.check_pace(act):
+                    Rule.check_pace(act) and \
+                    Rule.check_min_distance(act):
                         athlete_list.add_actitvity(act)
                 else:
                     print("Violated activity detected. Row: ", r)
