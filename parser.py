@@ -1,6 +1,7 @@
 from datetime import datetime
 import rule
 import female
+import groups
 
 # Treat all activities as Running
 class Activity:
@@ -108,7 +109,9 @@ class Athlete:
 
 class AthleteList:
     def __init__(self):
+        self.list_name = ""
         self.athlete_list = []
+        self.total_dstance = 0.0
 
     # Make object interable
     def __iter__(self):
@@ -139,6 +142,14 @@ class AthleteList:
             new_athlete = Athlete(activity.athlete_id, activity.athlete_name)
             new_athlete.activities.append(activity)
             self.__add_athlete(new_athlete)
+    
+    def calc_total_km(self) -> float:
+        km = 0.0
+        for ath in self.athlete_list:
+            ath.calc_total_km()
+            km += ath.total_distance
+        self.total_dstance = km
+        return km
 
 
 
@@ -178,6 +189,54 @@ class Rule:
 import os
 import csv
 
+def sort_athlete_by_distance(athlete_list: AthleteList):
+    male_athletes = []
+    female_athletes = []
+    for athlete in athlete_list:
+        athlete.calc_total_km()
+        if athlete.id in female.female_list:
+            female_athletes.append(athlete)
+        else:
+            male_athletes.append(athlete)
+
+
+    print("****** RESULT MALE *******")
+    sorted_male = sorted(male_athletes, key=lambda athlete: athlete.total_distance, reverse=True)
+    for athlete in sorted_male:
+        print("ID: {}, Name: {}, Total km: {}".format(athlete.id, athlete.name, athlete.total_distance))
+
+
+    print("****** RESULT FEMALE *******")
+    sorted_female = sorted(female_athletes, key=lambda athlete: athlete.total_distance, reverse=True)
+    for athlete in sorted_female:
+        print("ID: {}, Name: {}, Total km: {}".format(athlete.id, athlete.name, athlete.total_distance))
+
+
+
+def sort_group_by_distance(athlete_list: AthleteList):
+    group_list = []
+    for group_name, athlete_ids in groups.groups.items():
+        curr_group = AthleteList()
+
+        # Add athletes to the groups
+        for athlete in athlete_list:
+            if athlete.id in athlete_ids:
+                curr_group.athlete_list.append(athlete)
+        curr_group.calc_total_km()
+        curr_group.list_name = group_name
+        group_list.append(curr_group)
+
+    print("****** RESULT GROUP *******")
+    sorted_group = sorted(group_list, key=lambda group: group.total_dstance, reverse=True)
+    
+    # Print group name, group total distance and members
+    for group in sorted_group:
+        print("Group: {}, Total km: {}".format(group.list_name, group.total_dstance))
+        for ath in group.athlete_list:
+            print("   ID: {}, Name: {}, Total km: {}".format(ath.id, ath.name, ath.total_distance))
+        print("")
+
+
 if __name__ == "__main__":
     csv_list = []
     athlete_list = AthleteList()
@@ -213,27 +272,8 @@ if __name__ == "__main__":
                 print("Row: ", r)
                 print("Who: {}, ID: {}  , Type: {} , Distance: {},  Pace: {} , Date: {}\n".format(act.athlete_name, act.id, act.type, act.distance, act.pace, act.startdate))
     
-    print("################")
+    print("################\n\n")
     # Sort athlete by Gender
-    male_athletes = []
-    female_athletes = []
-    for athlete in athlete_list:
-        athlete.calc_total_km()
-        if athlete.id in female.female_list:
-            female_athletes.append(athlete)
-        else:
-            male_athletes.append(athlete)
-
-
-    print("****** RESULT MALE *******")
-    sorted_male = sorted(male_athletes, key=lambda athlete: athlete.total_distance, reverse=True)
-    for athlete in sorted_male:
-        print("ID: {}, Name: {}, Total km: {}".format(athlete.id, athlete.name, athlete.total_distance))
-
-
-    print("****** RESULT FEMALE *******")
-    sorted_female = sorted(female_athletes, key=lambda athlete: athlete.total_distance, reverse=True)
-    for athlete in sorted_female:
-        print("ID: {}, Name: {}, Total km: {}".format(athlete.id, athlete.name, athlete.total_distance))
-    
-
+    sort_athlete_by_distance(athlete_list)
+    print("")
+    sort_group_by_distance(athlete_list)
