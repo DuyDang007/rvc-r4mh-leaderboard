@@ -104,14 +104,14 @@ class Athlete:
         km = 0.0
         for act in self.activities:
             km += act.distance
-        self.total_distance = km
-        return km
+        self.total_distance = round(km, 2)
+        return self.total_distance
 
 class AthleteList:
     def __init__(self):
         self.list_name = ""
         self.athlete_list = []
-        self.total_dstance = 0.0
+        self.total_distance = 0.0
 
     # Make object interable
     def __iter__(self):
@@ -148,8 +148,8 @@ class AthleteList:
         for ath in self.athlete_list:
             ath.calc_total_km()
             km += ath.total_distance
-        self.total_dstance = km
-        return km
+        self.total_distance = round(km, 2)
+        return self.total_distance
 
 
 
@@ -188,8 +188,9 @@ class Rule:
 ########################################################################################
 import os
 import csv
+import json
 
-def sort_athlete_by_distance(athlete_list: AthleteList):
+def sort_athlete_by_distance(athlete_list: AthleteList) -> tuple[AthleteList, AthleteList]:
     male_athletes = []
     female_athletes = []
     for athlete in athlete_list:
@@ -210,10 +211,12 @@ def sort_athlete_by_distance(athlete_list: AthleteList):
     sorted_female = sorted(female_athletes, key=lambda athlete: athlete.total_distance, reverse=True)
     for athlete in sorted_female:
         print("ID: {}, Name: {}, Total km: {}".format(athlete.id, athlete.name, athlete.total_distance))
+    
+    return male_athletes, female_athletes
 
 
 
-def sort_group_by_distance(athlete_list: AthleteList):
+def sort_group_by_distance(athlete_list: AthleteList) -> list:
     group_list = []
     for group_name, athlete_ids in groups.groups.items():
         curr_group = AthleteList()
@@ -227,16 +230,18 @@ def sort_group_by_distance(athlete_list: AthleteList):
         group_list.append(curr_group)
 
     print("****** RESULT GROUP *******")
-    sorted_group = sorted(group_list, key=lambda group: group.total_dstance, reverse=True)
+    sorted_group = sorted(group_list, key=lambda group: group.total_distance, reverse=True)
     
     # Print group name, group total distance and members
     for group in sorted_group:
-        print("Group: {}, Total km: {}".format(group.list_name, group.total_dstance))
+        print("Group: {}, Total km: {}".format(group.list_name, group.total_distance))
         for ath in group.athlete_list:
             print("   ID: {}, Name: {}, Total km: {}".format(ath.id, ath.name, ath.total_distance))
         print("")
+    
+    return group_list
 
-
+#####################################################################################
 if __name__ == "__main__":
     csv_list = []
     athlete_list = AthleteList()
@@ -274,6 +279,29 @@ if __name__ == "__main__":
     
     print("################\n\n")
     # Sort athlete by Gender
-    sort_athlete_by_distance(athlete_list)
+    male_list, female_list = sort_athlete_by_distance(athlete_list)
     print("")
-    sort_group_by_distance(athlete_list)
+    group_list = sort_group_by_distance(athlete_list)
+
+    # os.makedirs("./result", exist_ok=True)
+
+    male_json = []
+    for ath in male_list:
+        male_json.append({"name": ath.name, "distance": ath.total_distance })
+    with open("./web/male.json", "w") as f:
+        json_text = json.dumps(male_json)
+        f.write(json_text)
+
+    female_json = []
+    for ath in female_list:
+        female_json.append({"name": ath.name, "distance": ath.total_distance })
+    with open("./web/female.json", "w") as f:
+        json_text = json.dumps(female_json)
+        f.write(json_text)
+
+    grp_json = []
+    for group in group_list:
+        grp_json.append({"name": group.list_name, "distance": group.total_distance })
+    with open("./web/group.json", "w") as f:
+        json_text = json.dumps(grp_json)
+        f.write(json_text)
