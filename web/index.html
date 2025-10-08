@@ -12,9 +12,9 @@
             <h1>RUN</h1>
         </div>
         <div class="right-column">
-            <h2>FOR</h2>
-            <h2>MENTAL HEALTH</h2>
-            <h2>AWARENESS</h2>
+            <h2 class="transparent-outline-text">FOR</h2>
+            <h2 class="transparent-outline-text">MENTAL HEALTH</h2>
+            <h2 class="transparent-outline-text">AWARENESS</h2>
         </div>
     </div>
     <div class="header">
@@ -26,7 +26,7 @@
     <div class="leaderboard" id="male-leaderboard">
         <h1>Bảng xếp hạng Nam</h1>
         <table>
-            <thead><tr><th>No.</th><th>Tên</th><th>Quãng đường tích lũy (km)</th></tr></thead>
+            <thead><tr><th>Xếp hạng</th><th>Tên</th><th>Quãng đường tích lũy (km)</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
@@ -34,7 +34,7 @@
     <div class="leaderboard" id="female-leaderboard">
         <h1>Bảng xếp hạng Nữ</h1>
         <table>
-            <thead><tr><th>No.</th><th>Tên</th><th>Quãng đường tích lũy (km)</th></tr></thead>
+            <thead><tr><th>Xếp hạng</th><th>Tên</th><th>Quãng đường tích lũy (km)</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
@@ -42,7 +42,7 @@
     <div class="leaderboard" id="group-leaderboard">
         <h1>Bảng xếp hạng Nhóm</h1>
         <table>
-            <thead><tr><th>No.</th><th>Nhóm</th><th>Quãng đường tích lũy (km)</th></tr></thead>
+            <thead><tr><th>Xếp hạng</th><th>Nhóm</th><th>Thành viên</th><th>Quãng đường tích lũy (km)</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
@@ -57,7 +57,7 @@
                 const tbody = document.querySelector(`#${elementId} tbody`);
                 var num = 0
 
-                for (let index = 0; index < sorted.length && index < 10; index++) {
+                for (let index = 0; index < sorted.length && index < 20; index++) {
                     const entry = sorted[index];
                     const row = document.createElement('tr');
                     row.innerHTML = `<td>${index + 1}</td><td>${entry.name}</td><td>${entry.distance}</td>`;
@@ -68,10 +68,35 @@
                 console.error(`Error loading ${file}:`, error);
             }
         }
+        async function loadLeaderboardGroup(file, elementId, topN) {
+            try {
+                const response = await fetch(file);
+                const data = await response.json();
+                const sorted = data.sort((a, b) => b.distance - a.distance).slice(0, topN);
 
-        loadLeaderboard('male.json', 'male-leaderboard', 20);
-        loadLeaderboard('female.json', 'female-leaderboard', 20);
-        loadLeaderboard('group.json', 'group-leaderboard', 5);
+                const tbody = document.querySelector(`#${elementId} tbody`);
+                var num = 0
+
+                for (let index = 0; index < sorted.length && index < 5; index++) {
+                    const entry = sorted[index];
+                    
+                    // Ensure members exist and are an array
+                    const membersHtml = Array.isArray(entry.members)
+                        ? entry.members.map(name => `<div>${name}</div>`).join('')
+                        : '';
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${index + 1}</td><td>${entry.name}</td><td style="text-align: left; padding-left: 20px;">${membersHtml}</td><td>${entry.distance}</td>`;
+                    tbody.appendChild(row);
+                }
+
+            } catch (error) {
+                console.error(`Error loading ${file}:`, error);
+            }
+        }
+
+        loadLeaderboard('male.json', 'male-leaderboard', 15);
+        loadLeaderboard('female.json', 'female-leaderboard', 15);
+        loadLeaderboardGroup('group.json', 'group-leaderboard', 5);
     </script>
 </body>
 </html>

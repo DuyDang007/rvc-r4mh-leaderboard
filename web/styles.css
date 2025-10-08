@@ -24,7 +24,7 @@ body {
     height: 180px;
 }
 .left-column {
-    width: 40%;
+    width: 50%;
     padding: 10px;
     border-radius: 12px;
     background-color: transparent;
@@ -35,7 +35,7 @@ body {
     line-height: 0.5;
 }
 .right-column {
-    width: 60%;
+    width: 50%;
     padding: 10px;
     border-radius: 12px;
     font-size: 20px;
@@ -44,6 +44,13 @@ body {
     background-color: transparent;
     line-height: 0.5;
 }
+
+h2.transparent-outline-text {
+  color: transparent; /* Makes the fill transparent */
+  -webkit-text-stroke: 1px white; /* White outline */
+  font-weight: bold; /* Optional: makes the stroke more visible */
+}
+
 .header h1 {
     font-size: 48px;
     margin: 0;
@@ -86,4 +93,10 @@ th, td {
 th {
     background-color: #596bbb;
     color: white;
+}
+
+
+.left-align {
+    text-align: left;
+    padding-left: 10px;
 }

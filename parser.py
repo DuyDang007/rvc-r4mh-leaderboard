@@ -112,6 +112,8 @@ class AthleteList:
         self.list_name = ""
         self.athlete_list = []
         self.total_distance = 0.0
+        # Contain member name list in case of listing all group members
+        self.member_name_list = []
 
     # Make object interable
     def __iter__(self):
@@ -150,6 +152,11 @@ class AthleteList:
             km += ath.total_distance
         self.total_distance = round(km, 2)
         return self.total_distance
+
+    def initialize_name_list(self):
+        all_member_id = groups.groups[self.list_name]
+        for mem_id in all_member_id:
+            self.member_name_list.append(groups.members[mem_id])
 
 
 
@@ -288,20 +295,26 @@ if __name__ == "__main__":
     male_json = []
     for ath in male_list:
         male_json.append({"name": ath.name, "distance": ath.total_distance })
-    with open("./web/male.json", "w") as f:
-        json_text = json.dumps(male_json)
+    with open("./web/male.json", "w", encoding="utf-8") as f:
+        json_text = json.dumps(male_json, ensure_ascii=False)
         f.write(json_text)
 
     female_json = []
     for ath in female_list:
         female_json.append({"name": ath.name, "distance": ath.total_distance })
-    with open("./web/female.json", "w") as f:
-        json_text = json.dumps(female_json)
+    with open("./web/female.json", "w", encoding="utf-8") as f:
+        json_text = json.dumps(female_json, ensure_ascii=False)
         f.write(json_text)
 
     grp_json = []
     for group in group_list:
-        grp_json.append({"name": group.list_name, "distance": group.total_distance })
-    with open("./web/group.json", "w") as f:
-        json_text = json.dumps(grp_json)
+        group.initialize_name_list()
+        json_obj = {
+            "name": group.list_name,
+            "distance": group.total_distance,
+            "members": group.member_name_list 
+        }
+        grp_json.append(json_obj)
+    with open("./web/group.json", "w", encoding="utf-8") as f:
+        json_text = json.dumps(grp_json, ensure_ascii=False)
         f.write(json_text)
