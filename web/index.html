@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Running Competition Leaderboard</title>
+    <title>Run for Mental Health Awareness -  Bảng xếp hạng</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -34,7 +34,7 @@
     <div class="leaderboard" id="female-leaderboard">
         <h1>Bảng xếp hạng Nữ</h1>
         <table>
-            <thead><tr><th>No.</th><th>Athlete Name</th><th>Quãng đường tích lũy (km)</th></tr></thead>
+            <thead><tr><th>No.</th><th>Tên</th><th>Quãng đường tích lũy (km)</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
@@ -42,7 +42,7 @@
     <div class="leaderboard" id="group-leaderboard">
         <h1>Bảng xếp hạng Nhóm</h1>
         <table>
-            <thead><tr><th>No.</th><th>Group Name</th><th>Quãng đường tích lũy (km)</th></tr></thead>
+            <thead><tr><th>No.</th><th>Nhóm</th><th>Quãng đường tích lũy (km)</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
@@ -55,11 +55,15 @@
                 const sorted = data.sort((a, b) => b.distance - a.distance).slice(0, topN);
 
                 const tbody = document.querySelector(`#${elementId} tbody`);
-                sorted.forEach((entry, index) => {
+                var num = 0
+
+                for (let index = 0; index < sorted.length && index < 10; index++) {
+                    const entry = sorted[index];
                     const row = document.createElement('tr');
                     row.innerHTML = `<td>${index + 1}</td><td>${entry.name}</td><td>${entry.distance}</td>`;
                     tbody.appendChild(row);
-                });
+                }
+
             } catch (error) {
                 console.error(`Error loading ${file}:`, error);
             }
