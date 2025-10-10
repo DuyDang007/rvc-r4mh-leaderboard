@@ -18,14 +18,14 @@
         </div>
     </div>
     <div class="header">
-        <h2>Cập nhật lúc: 08/10/2025</h2>
+        <h2 id="update-date">Cập nhật ngày: DD/MM/YYYY</h2>
     </div>
 
 
     <!-- BODY -->
     <div class="leaderboard" id="male-leaderboard">
         <h1>Bảng xếp hạng Nam</h1>
-        <table>
+        <table style="margin: 0 auto; width: 80%;">
             <thead><tr>
                 <th  style="width: 10%;">Xếp hạng</th>
                 <th style="width: 40%;">Tên</th>
@@ -37,7 +37,7 @@
 
     <div class="leaderboard" id="female-leaderboard">
         <h1>Bảng xếp hạng Nữ</h1>
-        <table>
+        <table style="margin: 0 auto; width: 80%;">
             <thead><tr>
                 <th style="width: 10%;">Xếp hạng</th>
                 <th style="width: 40%;">Tên</th>
@@ -49,7 +49,7 @@
 
     <div class="leaderboard" id="group-leaderboard">
         <h1>Bảng xếp hạng Nhóm</h1>
-        <table>
+        <table style="margin: 0 auto; width: 80%;">
             <thead><tr>
                 <th>Xếp hạng</th><th>Nhóm</th><th>Thành viên</th><th>Quãng đường tích lũy (km)</th>
             </tr></thead>
@@ -104,9 +104,22 @@
             }
         }
 
+        async function updateDate() {
+            fetch('update_date.json')
+                .then(response => response.json())
+                .then(data => {
+                const dateElement = document.getElementById('update-date');
+                dateElement.textContent = `Cập nhật ngày: ${data.updateDate}`;
+                })
+                .catch(error => {
+                console.error('Error loading JSON:', error);
+                });
+        }
+
         loadLeaderboard('male.json', 'male-leaderboard', 15);
         loadLeaderboard('female.json', 'female-leaderboard', 15);
         loadLeaderboardGroup('group.json', 'group-leaderboard', 5);
+        updateDate();
     </script>
 </body>
 </html>

@@ -42,6 +42,7 @@ class Activity:
                 if ukwn_type in location:
                     self_type = ukwn_type
                     break
+            self_type = "Run"
         else:
             print("DBG: Type {} not found. Check manually.".format(type))
             self_type = "Run"
@@ -258,7 +259,7 @@ if __name__ == "__main__":
 
     for csvfile in csv_list:
         with open(csvfile, "r", newline="", encoding='utf-8') as f:
-            print("File: ", csvfile)
+            print("\n\nFile: ", csvfile)
             reader = csv.reader(f)        
             # Convert to a list to access by index
             rows = list(reader)
@@ -318,3 +319,12 @@ if __name__ == "__main__":
     with open("./web/group.json", "w", encoding="utf-8") as f:
         json_text = json.dumps(grp_json, ensure_ascii=False)
         f.write(json_text)
+
+    
+    # Get today's date in DD-MM-YYYY format
+    today_date = datetime.today().strftime('%d-%m-%Y')
+    # Create a dictionary with the date
+    data = { "updateDate": today_date }
+    # Save the dictionary to a JSON file
+    with open("./web/update_date.json", "w") as json_file:
+        json.dump(data, json_file, indent=2)
