@@ -109,7 +109,7 @@
                 .then(response => response.json())
                 .then(data => {
                 const dateElement = document.getElementById('update-date');
-                dateElement.textContent = `Cập nhật ngày: ${data.updateDate}`;
+                dateElement.textContent = `Cập nhật lúc: ${data.updateDate}`;
                 })
                 .catch(error => {
                 console.error('Error loading JSON:', error);

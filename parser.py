@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, tzinfo
 import rule
 import female
 import groups
@@ -255,11 +255,17 @@ def sort_group_by_distance(athlete_list: AthleteList) -> list:
 
 #####################################################################################
 if __name__ == "__main__":
+    latest_csv_date = datetime.fromisoformat("2025-10-08T00:00:00.000+07:00")
     csv_list = []
     athlete_list = AthleteList()
     for filename in os.listdir('./CSV'):
         if filename.endswith(".csv"):
             csv_list.append("./CSV/" + filename)
+        # Parse datetime from file name
+        data, year, month, day, hour = filename.split('.')[0].split('-') # Example: data-2025-10-08-11.csv
+        curr_date = datetime(year=int(year), month=int(month), day=int(day), hour=int(hour), tzinfo=latest_csv_date.tzinfo)
+        if curr_date > latest_csv_date:
+            latest_csv_date = curr_date
 
     for csvfile in csv_list:
         with open(csvfile, "r", newline="", encoding='utf-8') as f:
@@ -326,7 +332,7 @@ if __name__ == "__main__":
 
     
     # Get today's date in DD-MM-YYYY format
-    today_date = datetime.today().strftime('%d-%m-%Y')
+    today_date = latest_csv_date.strftime('%H:%M, %d-%m-%Y')
     # Create a dictionary with the date
     data = { "updateDate": today_date }
     # Save the dictionary to a JSON file
