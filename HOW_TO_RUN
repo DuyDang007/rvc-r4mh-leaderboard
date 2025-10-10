@@ -1,2 +1,11 @@
 1. Put all .csv data files into CSV folder
-2. $ python parser.py
+2. Run parser
+$ python parser.py
+
+3. Start http host server
+$ python -m http.server 8000
+ 
+4. In browser, open
+localhost:8000
+ 
+ 5. Update start date in rule.py

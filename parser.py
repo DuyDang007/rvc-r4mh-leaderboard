@@ -59,8 +59,12 @@ class Activity:
 
         # Pace
         if pace != "":
-            m, s = map(int, pace.split(":"))
-            self_pace = m + (s / 60)
+            h = 0
+            if len (pace.split(":")) > 2: 
+                h, m, s = map(int, pace.split(":"))
+            else: 
+                m, s = map(int, pace.split(":"))
+            self_pace =  h * 60 + m + (s / 60)
         else:
             # Split into hours, minutes, seconds
             h, m, s = map(int, duration.split(":"))
