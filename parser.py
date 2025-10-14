@@ -28,9 +28,12 @@ class Activity:
             self_id = id
             self_athlete_id = athlete_id
         else:
-            print("DBG: Invalid activity ID")
+            print("DBG: Invalid activity ID or athletes ")
             return None
-
+        if not distance:
+            print("DBG: Invalid distance")
+            return None
+        
         # Activity type ==> No need to check, Club is already for running
         # Get the type to check pace rule only
         self_type = ""
