@@ -4,6 +4,7 @@ female_list = [
     "/athletes/114163917", # mình chỉ là người bình thường
     "/athletes/55925629",  # Bich Nguyen 
     "/athletes/125567536", # Linh LK
+    "/athletes/190529173", # Nga Nguyen
     "/athletes/189665651", # Ngân Trần
     "/athletes/46646019",  # Phê Nguyễn
     "/athletes/179460826", # Phượng Lê Thị Bích
