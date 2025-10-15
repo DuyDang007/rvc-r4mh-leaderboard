@@ -2,10 +2,9 @@
 2. Run parser
 $ python parser.py
 
-3. Start http host server
+3. Start http host server in ./web/ directory
+$ cd web
 $ python -m http.server 8000
  
 4. In browser, open
 localhost:8000
- 
- 5. Update start date in rule.py
