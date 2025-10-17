@@ -10,6 +10,8 @@ female_list = [
     "/athletes/179460826", # Phượng Lê Thị Bích
     "/athletes/132811677", # Tham Ho
     "/athletes/142018338", # Thien Ngan
+    "/athletes/141088294", # Thảo Nguyễn
+    "/athletes/132917302", # Thuy Nguyen
     "/athletes/174567490", # Trang Lê
     "/athletes/61004166",  # Trang Pham
     "/athletes/133156348"  # Tu Trinh
