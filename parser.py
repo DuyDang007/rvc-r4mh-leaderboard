@@ -14,12 +14,8 @@ class Activity:
         self.distance = 0 # km
         self.pace = 0.0 # min/km
         self.startdate = None # datetime obj
+        self.validity = None # True if the activity is valid
     
-    def isValid(self) -> bool:
-        # Filter the activity for valid date, pace here
-        # Return true if valid, otherwise false
-        return True
-
     ################################
     # Parse from csv file
     def parse(athlete_id: str, id: str, type: str, location: str, athlete_name:str, date: str, distance: str, pace: str, unit: str, duration: str):
@@ -95,10 +91,6 @@ class Athlete:
         self.total_distance = 0
     
     def add_activity(self, activity: Activity):
-        if not activity.isValid():
-            print("Invalid activity")
-            return
-
         for act in self.activities:
             if act.id == activity.id:
                 print("Duplicated activity")
@@ -111,7 +103,8 @@ class Athlete:
     def calc_total_km(self) -> float:
         km = 0.0
         for act in self.activities:
-            km += act.distance
+            if act.validity == True:
+                km += act.distance
         self.total_distance = round(km, 2)
         return self.total_distance
 
@@ -204,6 +197,7 @@ class Rule:
 import os
 import csv
 import json
+import glob
 
 def sort_athlete_by_distance(athlete_list: AthleteList) -> tuple[AthleteList, AthleteList]:
     male_athletes = []
@@ -256,6 +250,16 @@ def sort_group_by_distance(athlete_list: AthleteList) -> list:
     
     return group_list
 
+def export_json_personal(ath_list, file_name) -> list:
+    ath_json = []
+    for ath in ath_list:
+        ath_json.append({"id": ath.id.replace('/', '_'), "name": ath.name, "distance": ath.total_distance })
+    with open(file_name, "w", encoding="utf-8") as f:
+        json_text = json.dumps(ath_json, ensure_ascii=False)
+        f.write(json_text)
+    
+    return ath_json
+
 #####################################################################################
 if __name__ == "__main__":
     latest_csv_date = datetime.fromisoformat("2025-10-08T00:00:00.000+07:00")
@@ -290,9 +294,12 @@ if __name__ == "__main__":
                 if  Rule.check_activity_date(act) and \
                     Rule.check_pace(act) and \
                     Rule.check_min_distance(act):
+                        act.validity = True
                         athlete_list.add_actitvity(act)
                 else:
                     print("Violated activity detected. Row: ", r)
+                    act.validity = False
+                    athlete_list.add_actitvity(act)
                     continue
 
                 print("Row: ", r)
@@ -304,21 +311,8 @@ if __name__ == "__main__":
     print("")
     group_list = sort_group_by_distance(athlete_list)
 
-    # os.makedirs("./result", exist_ok=True)
-
-    male_json = []
-    for ath in male_list:
-        male_json.append({"name": ath.name, "distance": ath.total_distance })
-    with open("./web/male.json", "w", encoding="utf-8") as f:
-        json_text = json.dumps(male_json, ensure_ascii=False)
-        f.write(json_text)
-
-    female_json = []
-    for ath in female_list:
-        female_json.append({"name": ath.name, "distance": ath.total_distance })
-    with open("./web/female.json", "w", encoding="utf-8") as f:
-        json_text = json.dumps(female_json, ensure_ascii=False)
-        f.write(json_text)
+    male_json = export_json_personal(male_list, "./web/male.json")
+    female_json = export_json_personal(female_list, "./web/female.json")
 
     grp_json = []
     for group in group_list:
@@ -341,3 +335,29 @@ if __name__ == "__main__":
     # Save the dictionary to a JSON file
     with open("./web/update_date.json", "w") as json_file:
         json.dump(data, json_file, indent=2)
+
+############################################################################################
+    # Export detail activities of each athlete
+    os.makedirs("./web/detail", exist_ok=True)
+    files = glob.glob('./web/detail/*')
+    for f in files:
+        os.remove(f)
+
+    for ath in male_list + female_list:
+        json_data = { "name": ath.name }
+        json_name = ath.id.replace('/', '_')
+        json_activity_list = []
+        for act in ath.activities:
+            json_act = {
+                "id": act.id,
+                "type": act.type,
+                "date": act.startdate.strftime('%d-%m-%Y'),
+                "distance": act.distance,
+                "pace": act.pace,
+                "validity": act.validity
+            }
+            json_activity_list.append(json_act)
+        
+        json_data["activities"] = json_activity_list
+        with open("./web/detail/" + json_name + ".json", "w") as json_file:
+            json.dump(json_data, json_file, indent=2)

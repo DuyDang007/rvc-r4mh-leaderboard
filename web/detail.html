@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Athlete Activities</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header-image">
+    </div>
+    <div class="header">
+        <h2 id="update-date">Cập nhật ngày: DD/MM/YYYY</h2>
+    </div>
+
+
+    <!-- BODY -->
+    <div class="leaderboard" id="male-leaderboard">
+        <h1 id="athlete-name">Tên: </h1>
+        <table id="activity-table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Activity ID</th>
+                <th>Loại hoạt động</th>
+                <th>Ngày</th>
+                <th>Quãng đường (km)</th>
+                <th>Pace (min/km)</th>
+                <th>Hợp lệ</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    
+<script>
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    const athleteId = getQueryParam('id'); // e.g., id=12345678
+    const jsonFile = `detail/${athleteId}.json`;
+
+    fetch(jsonFile)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('athlete-name').textContent = `Tên: ${data.name}`;
+            const tbody = document.querySelector('#activity-table tbody');
+            data.activities.forEach((activity, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${activity.id}</td>
+            <td>${activity.type}</td>
+            <td>${activity.date}</td>
+            <td>${activity.distance.toFixed(2)}</td>
+            <td>${activity.pace.toFixed(2)}</td>
+            <td>${activity.validity ? '✅' : '❌'}</td>
+          `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading JSON:', error);
+            document.getElementById('athlete-name').textContent = 'Không tìm thấy thông tin';
+        });
+    
+    async function updateDate() {
+        fetch('update_date.json')
+            .then(response => response.json())
+            .then(data => {
+            const dateElement = document.getElementById('update-date');
+            dateElement.textContent = `Cập nhật lúc: ${data.updateDate}`;
+            })
+            .catch(error => {
+            console.error('Error loading JSON:', error);
+            });
+    }
+    updateDate();
+</script>
+
+
+</body>
+</html>

@@ -72,6 +72,11 @@ th {
     color: white;
 }
 
+.unformatted-link {
+    color: inherit;
+    text-decoration: none;
+}
+
 
 .left-align {
     text-align: left;

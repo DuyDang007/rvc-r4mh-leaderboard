@@ -1,5 +1,4 @@
 __pycache__
 .vscode
 CSV/*
-web/*.json
-
+web/**/*.json
