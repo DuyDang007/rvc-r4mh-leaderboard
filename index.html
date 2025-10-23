@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Run for Mental Health Awareness -  Bảng xếp hạng</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header-image">
+    </div>
+    <div class="header">
+        <h2 id="update-date">Cập nhật ngày: DD/MM/YYYY</h2>
+    </div>
+
+
+    <!-- BODY -->
+    <div class="leaderboard" id="male-leaderboard">
+        <h1>Bảng xếp hạng Nam</h1>
+        <table style="margin: 0 auto; width: 80%;">
+            <thead><tr>
+                <th  style="width: 10%;">Xếp hạng</th>
+                <th style="width: 40%;">Tên</th>
+                <th>Quãng đường tích lũy (km)</th>
+            </tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="leaderboard" id="female-leaderboard">
+        <h1>Bảng xếp hạng Nữ</h1>
+        <table style="margin: 0 auto; width: 80%;">
+            <thead><tr>
+                <th style="width: 10%;">Xếp hạng</th>
+                <th style="width: 40%;">Tên</th>
+                <th>Quãng đường tích lũy (km)</th>
+            </tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="leaderboard" id="group-leaderboard">
+        <h1>Bảng xếp hạng Nhóm</h1>
+        <table style="margin: 0 auto; width: 80%;">
+            <thead><tr>
+                <th>Xếp hạng</th><th>Nhóm</th><th>Thành viên</th><th>Quãng đường tích lũy (km)</th>
+            </tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function loadLeaderboard(file, elementId, topN) {
+            try {
+                const response = await fetch(file);
+                const data = await response.json();
+                const sorted = data.sort((a, b) => b.distance - a.distance).slice(0, topN);
+
+                const tbody = document.querySelector(`#${elementId} tbody`);
+                var num = 0
+
+                for (let index = 0; index < sorted.length && index < 20; index++) {
+                    const entry = sorted[index];
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${index + 1}</td><td><a class="unformatted-link" href=detail.html?id=${entry.id}>${entry.name}</a></td><td>${entry.distance}</td>`;
+                    tbody.appendChild(row);
+                }
+
+            } catch (error) {
+                console.error(`Error loading ${file}:`, error);
+            }
+        }
+        async function loadLeaderboardGroup(file, elementId, topN) {
+            try {
+                const response = await fetch(file);
+                const data = await response.json();
+                const sorted = data.sort((a, b) => b.distance - a.distance).slice(0, topN);
+
+                const tbody = document.querySelector(`#${elementId} tbody`);
+                var num = 0
+
+                for (let index = 0; index < sorted.length && index < 5; index++) {
+                    const entry = sorted[index];
+                    
+                    // Ensure members exist and are an array
+                    const membersHtml = Array.isArray(entry.members)
+                        ? entry.members.map(name => `<div>${name}</div>`).join('')
+                        : '';
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${index + 1}</td><td>${entry.name}</td><td style="text-align: left; padding-left: 20px;">${membersHtml}</td><td>${entry.distance}</td>`;
+                    tbody.appendChild(row);
+                }
+
+            } catch (error) {
+                console.error(`Error loading ${file}:`, error);
+            }
+        }
+
+        async function updateDate() {
+            fetch('update_date.json')
+                .then(response => response.json())
+                .then(data => {
+                const dateElement = document.getElementById('update-date');
+                dateElement.textContent = `Cập nhật lúc: ${data.updateDate}`;
+                })
+                .catch(error => {
+                console.error('Error loading JSON:', error);
+                });
+        }
+
+        loadLeaderboard('male.json', 'male-leaderboard', 15);
+        loadLeaderboard('female.json', 'female-leaderboard', 15);
+        loadLeaderboardGroup('group.json', 'group-leaderboard', 5);
+        updateDate();
+    </script>
+</body>
+</html>

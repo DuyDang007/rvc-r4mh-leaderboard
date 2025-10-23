@@ -1,0 +1,77 @@
+{
+  "name": "Dan .",
+  "activities": [
+    {
+      "id": "/activities/16117586754",
+      "type": "Run",
+      "date": "12-10-2025",
+      "distance": 9.09,
+      "pace": 8.983333333333333,
+      "validity": true
+    },
+    {
+      "id": "/activities/16100618822",
+      "type": "Run",
+      "date": "11-10-2025",
+      "distance": 3.27,
+      "pace": 13.583333333333334,
+      "validity": false
+    },
+    {
+      "id": "/activities/16100317312",
+      "type": "Run",
+      "date": "11-10-2025",
+      "distance": 11.24,
+      "pace": 7.75,
+      "validity": true
+    },
+    {
+      "id": "/activities/16126522006",
+      "type": "Run",
+      "date": "13-10-2025",
+      "distance": 5.5,
+      "pace": 7.016666666666667,
+      "validity": true
+    },
+    {
+      "id": "/activities/16132418895",
+      "type": "Run",
+      "date": "14-10-2025",
+      "distance": 4.06,
+      "pace": 12.066666666666666,
+      "validity": true
+    },
+    {
+      "id": "/activities/16148426287",
+      "type": "Run",
+      "date": "15-10-2025",
+      "distance": 9.24,
+      "pace": 8.483333333333333,
+      "validity": true
+    },
+    {
+      "id": "/activities/16176225631",
+      "type": "Trail Run",
+      "date": "18-10-2025",
+      "distance": 24.58,
+      "pace": 15.29698942229455,
+      "validity": true
+    },
+    {
+      "id": "/activities/16200539143",
+      "type": "Run",
+      "date": "20-10-2025",
+      "distance": 3.7,
+      "pace": 10.866666666666667,
+      "validity": true
+    },
+    {
+      "id": "/activities/16211357145",
+      "type": "Run",
+      "date": "21-10-2025",
+      "distance": 3.43,
+      "pace": 12.75,
+      "validity": true
+    }
+  ]
+}
