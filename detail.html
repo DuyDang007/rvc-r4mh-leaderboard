@@ -41,7 +41,11 @@
     }
 
     const athleteId = getQueryParam('id'); // e.g., id=12345678
-    const jsonFile = `detail/${athleteId}.json`;
+	const isLocalhost = window.location.hostname === 'localhost';
+	const jsonFile = isLocalhost
+	  ? `detail/${athleteId}.json`
+	  : `https://raw.githubusercontent.com/DuyDang007/rvc-r4mh-leaderboard/gh-page/detail/${athleteId}.json`;
+
 
     fetch(jsonFile)
         .then(response => response.json())
