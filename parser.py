@@ -347,7 +347,8 @@ if __name__ == "__main__":
         json_data = { "name": ath.name }
         json_name = ath.id.replace('/', '_')
         json_activity_list = []
-        for act in ath.activities:
+        # Sort activity by date
+        for act in sorted(ath.activities, key=lambda act: act.startdate):
             json_act = {
                 "id": act.id,
                 "type": act.type,
@@ -361,3 +362,13 @@ if __name__ == "__main__":
         json_data["activities"] = json_activity_list
         with open("./web/detail/" + json_name + ".json", "w") as json_file:
             json.dump(json_data, json_file, indent=2)
+
+############################################################################################
+# For fun
+############################################################################################
+
+    all_km = 0
+    for ath in athlete_list:
+        all_km += ath.total_distance
+    
+    print("TOTAL KM: ", all_km)
