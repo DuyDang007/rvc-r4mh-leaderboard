@@ -59,7 +59,7 @@
                 const tbody = document.querySelector(`#${elementId} tbody`);
                 var num = 0
 
-                for (let index = 0; index < sorted.length && index < 20; index++) {
+                for (let index = 0; index < sorted.length && index < topN; index++) {
                     const entry = sorted[index];
                     const row = document.createElement('tr');
                     row.innerHTML = `<td>${index + 1}</td><td><a class="unformatted-link" href=detail.html?id=${entry.id}>${entry.name}</a></td><td>${entry.distance}</td>`;
@@ -79,7 +79,7 @@
                 const tbody = document.querySelector(`#${elementId} tbody`);
                 var num = 0
 
-                for (let index = 0; index < sorted.length && index < 5; index++) {
+                for (let index = 0; index < sorted.length && index < topN; index++) {
                     const entry = sorted[index];
                     
                     // Ensure members exist and are an array
