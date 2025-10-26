@@ -49,6 +49,20 @@
         </table>
     </div>
 
+    <!-- EARTH -->
+    <div class="container" id="earth-container"  style="display: none;">
+        <div class="left-summary">
+            <h1 style="text-align:center; font-style: italic; font-size: 50px;">Bạn có biết?</h1>
+            <h2 id= "totalKm" style="text-align:center; font-size: 30px; margin-top: -20px;">Tổng quãng đường các vận động viên đã chạy là </h2>
+            <h3 style="text-align:center; margin-top: 40px; font-style: italic;">(Bán kính trung bình của Trái Đất là 6371km)</h3>
+        </div>
+
+        <div class="right-earth">
+            <canvas class="canvas-earth" id="canvas" width="600" height="600"></canvas>
+        </div>
+    </div>
+
+
     <script>
         async function loadLeaderboard(file, elementId, topN) {
             try {
@@ -112,6 +126,93 @@
         loadLeaderboard('female.json', 'female-leaderboard', 15);
         loadLeaderboardGroup('group.json', 'group-leaderboard', 5);
         updateDate();
+
+        // Drawing the earth
+        async function drawEarth(params) {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const rad = canvas.width / 2;
+
+
+            // Define 5 circles with different colors and radii
+            const circles = [
+            { color: '#149144', radius: rad, }, // Outermost circle
+            { color: '#7d4829', radius: rad * 0.9715 },
+            { color: '#c97520', radius: rad * 0.5363, gradient: true, colorStops: [['#9e4511', 1], ['#ff7919', 0  ]] },
+            { color: '#f0b71a', radius: rad * 0.1910, gradient: true, colorStops: [['#f0b71a', 1], ['#FFFFFF', 0  ]] } // Innermost circle
+            ];
+
+
+            // Draw from outermost to innermost
+            for (const c of circles) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, c.radius, 0, Math.PI * 2);
+
+                if (c.gradient && Array.isArray(c.colorStops)) {
+                    // Create gradient
+                    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, c.radius);
+
+                    // Add all defined color stops
+                    for (const [color, stop] of c.colorStops) {
+                    grad.addColorStop(stop, color);
+                    }
+
+                    ctx.fillStyle = grad;
+                } else {
+                    // Solid color fallback
+                    ctx.fillStyle = c.color || '#000';
+                }
+
+                ctx.fill();
+            }
+        }
+        async function drawLine(lengthPerCent) {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            // ---- Draw adjustable line on top ----
+            const lineWidth = 8;      // thickness of the line
+            const lineLength = (canvas.width / 2) * lengthPerCent / 100;   // adjustable length in pixels (from left edge toward center)
+
+            // Outer circle radius determines leftmost point
+            const startX = 0;  // leftmost of the circle
+            const endX = startX + lineLength; // how far toward center the line goes
+
+            ctx.beginPath();
+            ctx.moveTo(startX, cy);
+            ctx.lineTo(endX, cy);
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = '#FA5555';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        async function loadTotalKm() {
+            try {
+                const response = await fetch('total_km.json');
+                const data = await response.json();
+                const totalKmElement = document.getElementById('totalKm');
+                totalKmElement.textContent += `${data.total_km} km`;
+                return data.total_km;
+            } catch (error) {
+                console.error('Error loading total_km.json:', error);
+                return 0;
+            }
+        }
+
+        loadTotalKm().then(kmRaw => {
+            if (kmRaw){
+                const comp = document.getElementById('earth-container');
+                comp.style.display = 'flex';
+            };
+            const km = parseFloat(kmRaw);
+            let percent = parseFloat(km) / 6371 * 100; // Earth's radius approx. 6371 km
+            drawEarth();
+            drawLine( percent );
+        });
     </script>
 </body>
 </html>

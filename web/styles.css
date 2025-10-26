@@ -82,3 +82,40 @@ th {
     text-align: left;
     padding-left: 10px;
 }
+
+/* Styles for the canvas container */
+/* Container with two columns */
+.container {
+    display: flex;
+    /* Use flexbox for side-by-side layout */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: flex-start;
+    /* Align to top */
+    gap: 20px;
+    /* Space between columns */
+    padding: 20px;
+}
+
+/* Left column (e.g., controls or text) */
+.left-summary {
+    width: 60%;
+    height: 100%;
+    background: transparent;
+    vertical-align: middle;
+}
+
+/* Right column (canvas) */
+.right-earth {
+    flex: 1;
+    /* take remaining space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.canvas-earth {
+    background: transparent;
+    border: none solid #ccc;
+    border-radius: 8px;
+}
