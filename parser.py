@@ -370,5 +370,8 @@ if __name__ == "__main__":
     all_km = 0
     for ath in athlete_list:
         all_km += ath.total_distance
+    with open("./web/total_km.json", "w") as json_file:
+        json_obj = {"total_km": round(all_km, 2) }
+        json.dump(json_obj, json_file)
     
     print("TOTAL KM: ", all_km)

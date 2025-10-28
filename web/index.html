@@ -50,7 +50,7 @@
     </div>
 
     <!-- EARTH -->
-    <div class="container" id="earth-container"  style="display: none;">
+    <div class="container" id="earth-container">
         <div class="left-summary">
             <h1 style="text-align:center; font-style: italic; font-size: 50px;">Bạn có biết?</h1>
             <h2 id= "totalKm" style="text-align:center; font-size: 30px; margin-top: -20px;">Tổng quãng đường các vận động viên đã chạy là </h2>
@@ -122,9 +122,9 @@
                 });
         }
 
-        loadLeaderboard('male.json', 'male-leaderboard', 15);
-        loadLeaderboard('female.json', 'female-leaderboard', 15);
-        loadLeaderboardGroup('group.json', 'group-leaderboard', 5);
+        loadLeaderboard('male.json', 'male-leaderboard', 20);
+        loadLeaderboard('female.json', 'female-leaderboard', 20);
+        loadLeaderboardGroup('group.json', 'group-leaderboard', 8);
         updateDate();
 
         // Drawing the earth
@@ -189,6 +189,20 @@
             ctx.lineCap = 'round';
             ctx.stroke();
         }
+		
+		async function displayEarth(percent) {
+			const canvas = document.getElementById('canvas');
+			const ctx = canvas.getContext('2d');
+
+			const img = new Image();
+			img.src = 'earth.png'; // Replace with your image path or URL
+
+			img.onload = function() {
+                // Draw the image on the canvas
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                drawLine(percent);
+            }
+        }
 
         async function loadTotalKm() {
             try {
@@ -210,8 +224,9 @@
             };
             const km = parseFloat(kmRaw);
             let percent = parseFloat(km) / 6371 * 100; // Earth's radius approx. 6371 km
-            drawEarth();
-            drawLine( percent );
+            // drawEarth();
+			displayEarth(percent)
+            // drawLine( percent );
         });
     </script>
 </body>

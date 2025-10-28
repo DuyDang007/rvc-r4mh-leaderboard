@@ -86,7 +86,7 @@ th {
 /* Styles for the canvas container */
 /* Container with two columns */
 .container {
-    display: flex;
+    display: none;
     /* Use flexbox for side-by-side layout */
     justify-content: center;
     /* Center horizontally */
@@ -95,6 +95,10 @@ th {
     gap: 20px;
     /* Space between columns */
     padding: 20px;
+	background-image: url('starlight.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
 }
 
 /* Left column (e.g., controls or text) */
