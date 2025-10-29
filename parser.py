@@ -191,6 +191,13 @@ class Rule:
             return False
         else:
             return True
+    def check_valid_activity(activity: Activity):
+        #print (activity.id)
+        if activity.id in rule.acception_activity_list:
+            print ("invalid activities", activity.id, activity.athlete_name)
+            return False
+        else:
+            return True
 
 
 ########################################################################################
@@ -293,7 +300,8 @@ if __name__ == "__main__":
                 # Check for rule
                 if  Rule.check_activity_date(act) and \
                     Rule.check_pace(act) and \
-                    Rule.check_min_distance(act):
+                    Rule.check_min_distance(act) and  \
+                    Rule.check_valid_activity(act) :
                         act.validity = True
                         athlete_list.add_actitvity(act)
                 else:
@@ -302,8 +310,8 @@ if __name__ == "__main__":
                     athlete_list.add_actitvity(act)
                     continue
 
-                print("Row: ", r)
-                print("Who: {}, ID: {}  , Type: {} , Distance: {},  Pace: {} , Date: {}\n".format(act.athlete_name, act.id, act.type, act.distance, act.pace, act.startdate))
+                #print("Row: ", r)
+                #print("Who: {}, ID: {}  , Type: {} , Distance: {},  Pace: {} , Date: {}\n".format(act.athlete_name, act.id, act.type, act.distance, act.pace, act.startdate))
     
     print("################\n\n")
     # Sort athlete by Gender
