@@ -42,19 +42,19 @@
       "validity": true
     },
     {
-      "id": "/activities/16159421131",
-      "type": "Run",
-      "date": "16-10-2025",
-      "distance": 6.16,
-      "pace": 9.983333333333333,
-      "validity": true
-    },
-    {
       "id": "/activities/16154451788",
       "type": "Run",
       "date": "16-10-2025",
       "distance": 6.33,
       "pace": 11.166666666666666,
+      "validity": true
+    },
+    {
+      "id": "/activities/16159421131",
+      "type": "Run",
+      "date": "16-10-2025",
+      "distance": 6.16,
+      "pace": 9.983333333333333,
       "validity": true
     },
     {
@@ -136,6 +136,14 @@
       "distance": 4.21,
       "pace": 11.333333333333334,
       "validity": true
+    },
+    {
+      "id": "/activities/16297261332",
+      "type": "Run",
+      "date": "30-10-2025",
+      "distance": 6.27,
+      "pace": 9.416666666666666,
+      "validity": false
     }
   ]
 }

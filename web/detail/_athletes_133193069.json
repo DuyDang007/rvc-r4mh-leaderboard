@@ -106,19 +106,19 @@
       "validity": true
     },
     {
-      "id": "/activities/16280903699",
-      "type": "Run",
-      "date": "28-10-2025",
-      "distance": 6.55,
-      "pace": 10.45,
-      "validity": true
-    },
-    {
       "id": "/activities/16282433157",
       "type": "Run",
       "date": "28-10-2025",
       "distance": 3.92,
       "pace": 11.383333333333333,
+      "validity": true
+    },
+    {
+      "id": "/activities/16280903699",
+      "type": "Run",
+      "date": "28-10-2025",
+      "distance": 6.55,
+      "pace": 10.45,
       "validity": true
     },
     {
