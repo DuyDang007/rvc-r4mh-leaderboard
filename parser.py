@@ -166,7 +166,7 @@ class Rule:
 
     # Check the activity data is not before start date and after end date
     def check_activity_date(activity: Activity):
-        if datetime.fromisoformat(rule.START_DATE) <= activity.startdate <= datetime.fromisoformat(rule.END_DATE):
+        if datetime.fromisoformat(rule.START_DATE) <= activity.startdate < datetime.fromisoformat(rule.END_DATE):
             return True
         else:
             print("Activity out of start and end date")
