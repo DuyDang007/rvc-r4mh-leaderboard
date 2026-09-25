@@ -36,7 +36,7 @@ class Activity:
         if type in Activity.valid_type:
             self_type = type
         elif type == "unknown":
-            unknown_type_list = ["Morning Run", "Afternoon Run", "Evening Run", "Morning Trail Run", "Afternoon Trail Run", "Evening Trail Run"]
+            unknown_type_list = ["Morning Run", "Afternoon Run", "Evening Run", "Morning Trail Run", "Afternoon Trail Run", "Evening Trail Run", "Chạy bộ buổi sáng", "Chạy bộ buổi chiều", "Chạy bộ buổi tối", "Chạy ngoài trời"]
             for ukwn_type in unknown_type_list:
                 if ukwn_type in location:
                     self_type = ukwn_type
@@ -193,7 +193,7 @@ class Rule:
             return True
     def check_valid_activity(activity: Activity):
         #print (activity.id)
-        if activity.id in rule.acception_activity_list:
+        if activity.id in rule.exception_activity_list:
             print ("invalid activities", activity.id, activity.athlete_name)
             return False
         else:
